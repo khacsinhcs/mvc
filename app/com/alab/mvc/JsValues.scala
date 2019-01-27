@@ -20,7 +20,7 @@ case class JsValues(private val value: JsObject) extends HasValues {
       case _ =>
         js.asOpt[String] match {
           case Some(str: String) => Some(field.dataType.fromString(str))
-          case None => None()
+          case None => None
         }
     }
   }
