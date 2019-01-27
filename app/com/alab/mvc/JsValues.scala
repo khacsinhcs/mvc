@@ -17,12 +17,11 @@ class JsValues(private val value: JsValue) extends HasValues {
 
     data match {
       case Some(t) if tag.isInstance(t) => Some(t.asInstanceOf[T])
-      case None => {
+      case None =>
         js.asOpt[String] match {
           case Some(str: String) => Some(field.dataType.fromString(str))
           case None => None()
         }
-      }
     }
   }
 }
