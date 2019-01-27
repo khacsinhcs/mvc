@@ -11,8 +11,8 @@ object Convert {
     def reconstruct(value: HasValues): JsObject = {
       val seq = t.fields.map(f => {
         val jsValue: JsValueWrapper = {
-          val dataInValue = value -> f
-          dataInValue match {
+          val data = value -> f
+          data match {
             case Some(data: String) => JsString(data)
             case Some(data: Double) => JsNumber(data)
             case Some(data: Int) => JsNumber(data)
