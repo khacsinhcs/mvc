@@ -3,14 +3,16 @@ package com.alab.mvc
 import com.alab.conf._
 import com.alab.model.HasValues
 import play.api.libs.json.JsObject
-
 case class JsValues(private val value: JsObject) extends HasValues {
   override protected def _get[T](field: Field[T]): Option[T] = {
     val js = value \ field.name
     val data = field.dataType match {
-      case StringType || PhoneType || StringType => js.asOpt[String]
+      case StringType => js.asOpt[String]
+      case PhoneType => js.asOpt[String]
+      case EmailType => js.asOpt[String]
       case NumberType => js.asOpt[Double]
-      case IntType || IdKey => js.asOpt[Int]
+      case IntType => js.asOpt[Int]
+      case IdKey => js.asOpt[Int]
     }
 
     val tag = field.dataType.classTag.runtimeClass
