@@ -2,9 +2,24 @@ package com.alab.mvc
 
 import com.alab.conf._
 import com.alab.model.HasValues
-import play.api.libs.json.JsObject
+import play.api.libs.json._
+
 case class JsValues(private val value: JsObject) extends HasValues {
-  override protected def _get[T](field: Field[T]): Option[T] = {
+
+  override def getRaw(name: String): Option[_] = {
+    val js = value \ name
+    js match {
+      case JsUndefined() => None
+      case JsDefined(value) => value match {
+        case obj : JsObject => Some(JsValues(obj))
+        case JsBoolean(b) => Some(b)
+        case JsString(s) => Some(s)
+        case JsNumber(n) => Some(n)
+      }
+    }
+  }
+
+  protected def test[T](field: Field[T]): Option[T] = {
     val js = value \ field.name
     val data = field.dataType match {
       case StringType => js.asOpt[String]
@@ -14,6 +29,7 @@ case class JsValues(private val value: JsObject) extends HasValues {
       case IntType => js.asOpt[Int]
       case IdKey => js.asOpt[Int]
     }
+
 
     val tag = field.dataType.classTag.runtimeClass
 
