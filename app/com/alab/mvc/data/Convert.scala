@@ -2,9 +2,9 @@ package com.alab.mvc.data
 
 import com.alab.conf._
 import com.alab.model.HasValues
+import com.alab.mvc.model.JsValues
 import play.api.libs.json.Json.JsValueWrapper
 import play.api.libs.json._
-import com.alab.mvc.JsValues
 
 object Convert {
   def toJson(value: HasValues, t: Type): JsObject = {
@@ -25,7 +25,7 @@ object Convert {
     }
     value match {
       case JsValues(v: JsObject) => v
-      case _ => reconstruct(value)
+      case other => reconstruct(other)
     }
 
   }

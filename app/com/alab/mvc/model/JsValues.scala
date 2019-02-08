@@ -1,4 +1,4 @@
-package com.alab.mvc
+package com.alab.mvc.model
 
 import com.alab.conf._
 import com.alab.model.HasValues
@@ -10,7 +10,7 @@ case class JsValues(private val value: JsObject) extends HasValues {
     val js = value \ name
     js match {
       case JsUndefined() => None
-      case JsDefined(value) => value match {
+      case JsDefined(v) => v match {
         case obj : JsObject => Some(JsValues(obj))
         case JsBoolean(b) => Some(b)
         case JsString(s) => Some(s)
