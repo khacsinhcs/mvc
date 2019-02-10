@@ -23,6 +23,8 @@ class CaseClassSpec extends FlatSpec with Matchers {
   "hasValues" should "convert to class" in {
     val otherStudent = HasValuesMapperHelper.materialize[StudentClazz](student, Student)
     otherStudent.firstName should be(Some("Sinh"))
+    val stu = MapValues(HashMap("age" -> "18"))
+    stu.materialize[StudentClazz](Student).firstName should be(None)
   }
 
 }
