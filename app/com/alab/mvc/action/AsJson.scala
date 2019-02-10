@@ -1,6 +1,5 @@
 package com.alab.mvc.action
 
-import com.alab.Mappable
 import com.alab.model.{HasValues, MapValues}
 import com.alab.mvc.model.{JsValues, PathValue}
 import javax.inject.Inject
@@ -16,8 +15,6 @@ class BodyAsJson @Inject()(val parser: BodyParsers.Default)(implicit val executi
   override protected def transform[A](request: Request[A]): Future[RequestAsJson[A]] = Future.successful {
     val header = request.headers.toSimpleMap
     val headersAsHasValue = MapValues(header)
-
-    val map = Mappable[RequestAsJson]
 
 
     request.body match {
