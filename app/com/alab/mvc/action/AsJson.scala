@@ -1,7 +1,7 @@
 package com.alab.mvc.action
 
 import com.alab.model.{HasValues, MapValues}
-import com.alab.mvc.model.{JsValues, PathValue}
+import com.alab.mvc.value.{JsValues, PathValue}
 import javax.inject.Inject
 import play.api.libs.json.JsObject
 import play.api.mvc._

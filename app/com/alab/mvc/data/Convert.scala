@@ -2,7 +2,7 @@ package com.alab.mvc.data
 
 import com.alab.conf._
 import com.alab.model.HasValues
-import com.alab.mvc.model.JsValues
+import com.alab.mvc.value.JsValues
 import play.api.libs.json.Json.JsValueWrapper
 import play.api.libs.json._
 

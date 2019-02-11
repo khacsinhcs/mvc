@@ -1,4 +1,4 @@
-package com.alab.mvc.model
+package com.alab.mvc.value
 
 import com.alab.conf._
 import com.alab.model.HasValues
