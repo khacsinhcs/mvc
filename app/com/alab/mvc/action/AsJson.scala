@@ -16,7 +16,6 @@ class BodyAsJson @Inject()(val parser: BodyParsers.Default)(implicit val executi
     val header = request.headers.toSimpleMap
     val headersAsHasValue = MapValues(header)
 
-
     request.body match {
       case any: AnyContent => any.asJson match {
         case Some(t: JsObject) => RequestAsJson[A](request, headersAsHasValue +: JsValues(t))
@@ -34,4 +33,8 @@ class QueryAsJson @Inject()(val parser: BodyParsers.Default)(implicit val execut
     val query: HasValues = PathValue(request.queryString)
     RequestAsJson[A](request, headers +: query)
   }
+}
+
+trait JsonHelper {
+  def bodyAsJson(implicit parser: BodyParsers.Default, executionContext: ExecutionContext) = new BodyAsJson(parser)
 }
