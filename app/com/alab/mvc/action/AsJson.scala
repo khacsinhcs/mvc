@@ -9,7 +9,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 case class RequestAsHasValue[A](request: Request[A], hasValues: HasValues) extends WrappedRequest[A](request)
 
-class BodyReader(val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext)
+class BodyReader(val parser: BodyParsers.Default, val executionContext: ExecutionContext)
   extends ActionBuilder[RequestAsHasValue, AnyContent] with ActionTransformer[Request, RequestAsHasValue] {
   override protected def transform[A](request: Request[A]): Future[RequestAsHasValue[A]] = Future.successful {
     val header = request.headers.toSimpleMap
@@ -25,17 +25,17 @@ class BodyReader(val parser: BodyParsers.Default)(implicit val executionContext:
   }
 }
 
-class QueryReader(val parser: BodyParsers.Default)(implicit val executionContext: ExecutionContext)
+class QueryReader(val parser: BodyParsers.Default, val executionContext: ExecutionContext)
   extends ActionBuilder[RequestAsHasValue, AnyContent] with ActionTransformer[Request, RequestAsHasValue] {
   override protected def transform[A](request: Request[A]): Future[RequestAsHasValue[A]] = Future {
     val headers = MapValues(request.headers.toSimpleMap)
     val query: HasValues = PathValue(request.queryString)
     RequestAsHasValue[A](request, headers +: query)
-  }
+  }(executionContext)
 }
 
 trait HasValueReader {
-  def BodyAsHasValue(implicit parser: BodyParsers.Default, executionContext: ExecutionContext) = new BodyReader(parser)
+  def BodyAsHasValue(implicit parser: BodyParsers.Default, executionContext: ExecutionContext) = new BodyReader(parser, executionContext)
 
-  def QueryAsHasValue(implicit parser: BodyParsers.Default, executionContext: ExecutionContext) = new QueryReader(parser)
+  def QueryAsHasValue(implicit parser: BodyParsers.Default, executionContext: ExecutionContext) = new QueryReader(parser, executionContext)
 }
